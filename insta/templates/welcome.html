@@ -1,0 +1,36 @@
+{%extends 'base.html' %}
+
+{%load bootstrap4%}
+{%load static%}
+{%block content%}
+{{block.super}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Instagram Home</title>
+</head>
+<body>
+    <h1 class='text-center'>Checking if document is working properly</h1>
+    {% for images in images%}
+    <a href="{%url 'photo' images.id%}"><img src="{{images.image.url}}" alt="myimage" style="height:300px;width:300px;" ></a>
+   <p style="color:red;">{{images.image_caption}}</p> 
+    {%endfor%}
+
+    <!-- Looping through news end   -->
+<div class="container-fluid">
+
+        <form  action="{%url 'welcome'%}" method="post">
+          {%csrf_token%}
+      
+          {% bootstrap_form letterForm layout='inline' %}
+          <input type="submit" value="Subscribe">
+        </form>
+      
+      </div>
+</body>
+</html>
+
+{%endblock%}

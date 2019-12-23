@@ -14,15 +14,24 @@
 </head>
 <body>
     <h1 class='text-center'>Checking if document is working properly</h1>
-    {% for images in images%}
-    <a href="{%url 'photo' images.id%}"><img src="{{images.image.url}}" alt="myimage" style="height:300px;width:300px;" ></a>
-   <p style="color:red;">{{images.image_caption}}</p> 
+    {%for profile in profile%}
+    <img src="{{profile.profile_photo.url}}" alt="profilephoto" style="height:300px;width:300px;" >
+    <p>{{profile.bio}}</p>
     {%endfor%}
 
-    <!-- Looping through news end   -->
+
+    {% for images in images%}
+    <a href="{%url 'photo' images.id%}"><img src="{{images.image.url}}" alt="myimage" style="height:300px;width:300px;" ></a>
+   <p style="color:red;">{{images.image_caption}}</p>
+   <p style="color:red;">{{images.image_name}}</p> 
+    {%endfor%}
+
+
+
+    <!-- Subscribe Form   -->
 <div class="container-fluid">
 
-        <form  action="{%url 'welcome'%}" method="post">
+        <form action="{%url 'welcome'%}" method="post">
           {%csrf_token%}
       
           {% bootstrap_form letterForm layout='inline' %}

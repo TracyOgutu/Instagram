@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse,Http404,HttpResponseRedirect
-from . models import Image,Profile,NewsLetterRecipients
-from .forms import NewsLetterForm,NewImageForm,NewProfileForm
+from . models import Image,Profile,NewsLetterRecipients,Comments
+from .forms import NewsLetterForm,NewImageForm,NewProfileForm,NewCommentForm
 from .email import send_welcome_email
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 def welcome(request):
     images=Image.get_images()
     profile=Profile.get_profile()
+    comment=Comments.get_comments()
     if request.method == 'POST':
         form = NewsLetterForm(request.POST)
         if form.is_valid():
@@ -22,7 +23,7 @@ def welcome(request):
     else:
         form = NewsLetterForm()
 
-    return render(request,'welcome.html',{"images":images,"letterForm":form,"profile":profile})
+    return render(request,'welcome.html',{"images":images,"letterForm":form,"profile":profile,"comment":comment})
 
 def search_category(request):
     if 'category' in request.GET and request.GET["category"]:
@@ -74,5 +75,24 @@ def new_profile(request):
     else:
         form = NewProfileForm()
     return render(request, 'new_profile.html', {"form": form})
+
+def makecomment(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = NewCommentForm(request.POST, request.FILES)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.editor = current_user
+            comment.save()
+        return redirect('welcome')
+
+    else:
+        form = NewCommentForm()
+    return render(request, 'comment.html', {"form": form})
+   
+def deletephoto(request,photo_id):
+    object = get_object_or_404(Model, pk=photo_id)
+    object.delete()
+    return render(request)
 
 

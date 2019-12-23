@@ -9,6 +9,9 @@ urlpatterns=[
     url(r'^photo/(\d+)',views.single_photo,name='photo'),
     url(r'^new/image$', views.new_image, name='new-image'),
     url(r'^new/profile$', views.new_profile, name='new-profile'),
+    url(r'^comment$',views.makecomment,name='makecomment'),
+    url(r'^(?P<object_id>[0-9]+)/delete_answer/$', views.deletephoto, name='deletephoto'),
+    
 ]
 if settings.DEBUG:
     urlpatterns+= static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

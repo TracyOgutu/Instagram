@@ -16,6 +16,19 @@ class Profile(models.Model):
         profile=cls.objects.all()
         return profile
 
+class Comments(models.Model):
+    detail= HTMLField()
+    editor = models.ForeignKey(User,on_delete=models.CASCADE)
+    comment_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.detail
+
+    @classmethod
+    def get_comments(cls):
+        comment=cls.objects.all()
+        return comment
+
     
 class Image(models.Model):
     image=models.ImageField(upload_to='images/',blank=True)
@@ -24,7 +37,7 @@ class Image(models.Model):
     editor = models.ForeignKey(User,on_delete=models.CASCADE)
     profile=models.ForeignKey(Profile,null=True)
     likes=models.IntegerField(null=True)
-    comments=models.CharField(max_length=100,null=True)
+    comments=models.ForeignKey(Comments,null=True)
     pub_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -17,7 +17,7 @@
           {% for categories in categories %}
             <div class="col-sm-6 col-md-3">
                 <h1>{{categories.image_caption}}</h1>
-                <img src ="{{categories.image.url}}" alt="image" style="height:300px;width: 300px;">
+                <a href="{%url 'photo' categories.id%}"><img src ="{{categories.image.url}}" alt="image" style="height:300px;width: 300px;"></a>
             </div>
           {% endfor %}
         {% endif %}

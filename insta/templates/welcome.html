@@ -24,8 +24,16 @@
     <a href="{%url 'photo' images.id%}"><img src="{{images.image.url}}" alt="myimage" style="height:300px;width:300px;" ></a>
    <p style="color:red;">{{images.image_caption}}</p>
    <p style="color:red;">{{images.image_name}}</p> 
+   <a href="{% url 'makecomment' %}">Make comment</a>
+   <a ><button>Delete Post</button></a>
     {%endfor%}
 
+
+    {% for comment in comment%}
+    <p>{{comment.detail|safe}}</p>
+    <p>Comment by {{comment.editor}} {{comment.comment_date|timesince}} ago<p>
+    {%endfor%}
+ 
 
 
     <!-- Subscribe Form   -->

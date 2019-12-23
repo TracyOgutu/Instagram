@@ -12,6 +12,10 @@
 <body>
     <img src="{{photo.image.url}}" alt="image" height="300px;" width="300px;">
     <h1>{{photo.image_caption}}</h1>
+
+    <div class="row">
+        <p>Posted {{photo.pub_date|timesince}}ago by {{photo.editor}}</p>
+    </div>
 </body>
 </html>
 {%endblock%}

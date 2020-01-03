@@ -11,6 +11,8 @@ urlpatterns=[
     url(r'^new/profile$', views.new_profile, name='new-profile'),
     url(r'^comment$',views.makecomment,name='makecomment'),
     url(r'^(?P<object_id>[0-9]+)/delete_answer/$', views.deletephoto, name='deletephoto'),
+    url(r'^like$',views.like_a_post,name='like_a_post'),
+    
     
 ]
 if settings.DEBUG:

@@ -7,21 +7,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     {%if title%}
-    <title>Instagram</title>
+    <title>Instatonne</title>
     {%else %}
-    <title>Instagram Home</title>
+    <title>Instatonne Home</title>
     {%endif%}
 
     {%block styles%}
     {%bootstrap_css%}
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/insta.css' %}">
     {%endblock%}
 </head>
 <body>
-    {% include 'navbar.html' %}
+   
 
     {%block content%}
-    <h1 class='text-center'>Instagram Test Bootstrap</h1>
+    <h1 class='text-center'>Instatonne Test Bootstrap</h1>
     {%endblock%}
 
     {%block scripts%}

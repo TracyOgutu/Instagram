@@ -1,15 +1,20 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse,Http404,HttpResponseRedirect
 from . models import Image,Profile,NewsLetterRecipients,Comments
 from .forms import NewsLetterForm,NewImageForm,NewProfileForm,NewCommentForm
 from .email import send_welcome_email
 from django.contrib.auth.decorators import login_required
-# Create your views here.
+from django.contrib.auth.models import User
 
+# Create your views here.
+@login_required(login_url='/accounts/login/')
 def welcome(request):
-    images=Image.get_images()
-    profile=Profile.get_profile()
+    everyoneimages=Image.get_images()
     comment=Comments.get_comments()
+    users = User.objects.all()
+    logged_in_user = request.user
+    logged_in_user_posts = Image.objects.filter(editor=logged_in_user)
+    profile=Profile.objects.filter(editor=logged_in_user)
     if request.method == 'POST':
         form = NewsLetterForm(request.POST)
         if form.is_valid():
@@ -23,7 +28,7 @@ def welcome(request):
     else:
         form = NewsLetterForm()
 
-    return render(request,'welcome.html',{"images":images,"letterForm":form,"profile":profile,"comment":comment})
+    return render(request,'index.html',{"everyone":everyoneimages,"images":logged_in_user_posts,"letterForm":form,"profile":profile,"comment":comment,"users":users})
 
 def search_category(request):
     if 'category' in request.GET and request.GET["category"]:
@@ -38,13 +43,31 @@ def search_category(request):
 
 @login_required(login_url='/accounts/login/')
 def single_photo(request,photo_id):
-    try:
-        photo=Image.objects.get(id=photo_id)
 
-    except DoesNotExist:
-        raise Http404()
+    if request.method=='POST':
 
-    return render(request,'photo.html',{"photo":photo})
+        form=NewCommentForm(request.POST)
+        if form.is_valid():
+            comment=form.save(commit=False)
+            comment.editor=request.user      
+            post=Image.objects.get(id=photo_id)
+            comment.image_foreign=post
+            comment.save()
+            HttpResponseRedirect('single_photo')
+    else:
+        form=NewCommentForm()
+
+    image_posted=Image.single_image(photo_id)  
+    imageId=Image.get_image_id(photo_id)
+    comments=Comments.get_singlepost_comments(imageId)
+        
+    # try:
+    #     photo=Image.objects.get(id=photo_id)
+
+    # except DoesNotExist:
+    #     raise Http404()
+
+    return render(request,'photo.html',{"form":form,"comments":comments,"photo":image_posted})
 
 @login_required(login_url='/accounts/login/')
 def new_image(request):
@@ -94,5 +117,10 @@ def deletephoto(request,photo_id):
     object = get_object_or_404(Model, pk=photo_id)
     object.delete()
     return render(request)
+
+def like_a_post(request):
+    post = get_object_or_404(Image,id=request.POST.get('post_id'))
+    post.likes.add(request.user)
+    return redirect('welcome')
 
 

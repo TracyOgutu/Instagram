@@ -146,11 +146,16 @@
                         <h1 class="mb-5">Instatonne
                             <hr>Showcase your beautiful photos or anything else!</h1>
                         <a href="{%url 'new-image'%}" class="btn btn-outline btn-xl js-scroll-trigger">Start
-                            Sharing!</a>
+                            Sharing!</a><hr>
+
+                          
                     </div>
                 </div>
                 <div class="col-lg-5 my-auto">
+                        
                     <div class="device-container">
+
+                           
                         <div class="device-mockup iphone6_plus portrait white">
                             <div class="device">
                                 {%for profile in profile%}
@@ -159,6 +164,7 @@
                                     <!-- Demo image for screen mockup, you can put an image here, some HTML, an animation, video, or anything else! -->
                                     <img src="{{profile.profile_photo.url}}" class="img-fluid" style="height:100%;">
                                 </div>
+                               
                                 {%endif%}
                                 {%endfor%}
                                 <div class="button">
@@ -174,9 +180,27 @@
 
     <section class="features" id="photos">
         <h1 class="text-center" style="color: tomato;">{{user.username}} instatonne personal photos </h1>
+        {%if profile%}
+        {%for profile in profile%}
+        {% if user.is_authenticated %}
+       
+        <div>
+                <h1 class="text-center">{{user.username}} bio: {{profile.bio}}</h1>
+        </div>
+        {%endif%}
+        {%endfor%}
+        {%else%}
+        <div>
+            <h1 class="text-center">{{user.username}} has no bio</h1>
+        </div>
+        {%endif%}
+        
+        
         <div class="row">
+            {%if images%}
             {% for images in images%}
             {% if user.is_authenticated %}
+           
             <div class="col-lg-4">
                 <div class="feature-item">
                     <a href="{% url 'photo' images.id %}"><img src="{{images.image.url}}" alt="myimage"
@@ -202,7 +226,8 @@
                         <hr>
                         <p>Likes: {{images.likes.count}}</p>
                         <hr>
-                        <a href="/photo/{{images.id}}">Comment</a>
+                        <a href="/photo/{{images.id}}">Comment</a><hr>
+                        <a href="{% url 'delete' images.id %}">Delete</a>
                         <hr>
                     </div>
                     <!-- <a href="% url 'deletephoto' %"><button>Delete Post</button></a> -->
@@ -210,6 +235,12 @@
             </div>
             {%endif%}
             {%endfor%}
+            {%else%}
+            
+                <h1 style="color: tomato;margin-left:37%;" >No photos posted yet</h1>
+            
+            {%endif%}
+            
         </div>
         </div>
         </div>
@@ -248,6 +279,7 @@
             <div class="container-fluid">
                 <hr class="mt-2 mb-5">
                 <div class="row text-lg-left">
+                    {%if everyone%}
                     {%for everyone in everyone%}
                     {% if user.is_authenticated %}
                     <div class="col-lg-4 col-md-4 col-6">
@@ -257,7 +289,9 @@
                     </div>
                     <div>
                         <h6>Posted by: {{everyone.editor}} </h6>
+                        <h6>Followers: {{everyone.followers.count}}</h6>
                         <h6>Likes: {{everyone.likes.count}}</h6>
+                       
                         <form action="{% url 'like_a_post' %}" method="post">
                             {% csrf_token %}
                             <button class="like" type="submit" name="post_id" value="{{everyone.id}}"><img width="45px"
@@ -266,10 +300,27 @@
                                 Post</button>
                         </form>
                         <a href="/photo/{{everyone.id}}">Comment</a><br>
-                        <a href="% url 'deletephoto' %"><button>Delete Post</button></a>
+                       
+
+                        <form action="{% url 'follow' %}" method="post">
+                            {% csrf_token %}
+                            <button class="follow" type="submit" name="post_id" value="{{everyone.id}}"><img width="45px"
+                                    height="40px"
+                                    src="https://www.freepngimg.com/thumb/heart/67620-heart-instagram-icons-button-computer-like.png">Follow
+                            </button>
+                        </form>
+                        <hr>
+                       
                     </div>
                     {%endif%}
                     {%endfor%}
+                    {%else%}
+                   
+                        <h1 style="margin-left: 26%;">No community stories posted yet</h1>
+                   
+                    {%endif%}
+
+                   
                 </div>
                 <hr>
             </div>
@@ -303,7 +354,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; Your Website 2019. All Rights Reserved.</p>
+            <p>&copy; Instatonne Website 2020. All Rights Reserved.</p>
             <ul class="list-inline">
                 <li class="list-inline-item">
                     <a href="#">Privacy</a>

@@ -6,48 +6,52 @@
 {{block.super}}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Instatonne Home</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Instatonne Home</title>
 </head>
+
 <body>
-    <h1 class='text-center'>Checking if document is working properly</h1>
-    {%for profile in profile%}
-    <img src="{{profile.profile_photo.url}}" alt="profilephoto" style="height:300px;width:300px;" >
-    <p>{{profile.bio}}</p>
-    {%endfor%}
+  <h1 class='text-center'>Checking if document is working properly</h1>
+  {%for profile in profile%}
+  <img src="{{profile.profile_photo.url}}" alt="profilephoto" style="height:300px;width:300px;">
+  <p>{{profile.bio}}</p>
+  {%endfor%}
 
 
-    {% for images in images%}
-    <a href="{%url 'photo' images.id%}"><img src="{{images.image.url}}" alt="myimage" style="height:300px;width:300px;" ></a>
-   <p style="color:red;">{{images.image_caption}}</p>
-   <p style="color:red;">{{images.image_name}}</p> 
-   <a href="{% url 'makecomment' %}">Make comment</a>
-   
-    {%endfor%}
+  {% for images in images%}
+  <a href="{%url 'photo' images.id%}"><img src="{{images.image.url}}" alt="myimage"
+      style="height:300px;width:300px;"></a>
+  <p style="color:red;">{{images.image_caption}}</p>
+  <p style="color:red;">{{images.image_name}}</p>
+  <a href="{% url 'makecomment' %}">Make comment</a>
+
+  {%endfor%}
 
 
-    {% for comment in comment%}
-    <p>{{comment.detail|safe}}</p>
-    <p>Comment by {{comment.editor}} {{comment.comment_date|timesince}} ago<p>
-    {%endfor%}
- 
+  {% for comment in comment%}
+  <p>{{comment.detail|safe}}</p>
+  <p>Comment by {{comment.editor}} {{comment.comment_date|timesince}} ago<p>
+      {%endfor%}
 
 
-    <!-- Subscribe Form   -->
-<div class="container-fluid">
+
+      <!-- Subscribe Form   -->
+      <div class="container-fluid">
 
         <form action="{%url 'welcome'%}" method="post">
           {%csrf_token%}
-      
+
           {% bootstrap_form letterForm layout='inline' %}
           <input type="submit" value="Subscribe">
         </form>
-      
+
       </div>
 </body>
+
 </html>
 
 {%endblock%}

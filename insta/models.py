@@ -4,37 +4,86 @@ from tinymce.models import HTMLField
 
 # Create your models here.
 class Profile(models.Model):
+    '''
+    Class that contains User Profile details
+    '''
     profile_photo=models.ImageField(upload_to='images/',blank=True)
     bio=models.CharField(max_length=100)
     editor = models.ForeignKey(User,on_delete=models.CASCADE)
 
     def __str__(self):
+        '''
+        Setting up self 
+        '''
         return self.bio
 
     @classmethod
     def get_profile(cls):
+        '''
+        Method to retrieve the profile details
+        '''
         profile=cls.objects.all()
         return profile
+
+    def save_profile(self):
+        '''
+        Method to save the created profile
+        '''
+        self.save()
+
+    def delete_profile(self):
+        '''
+        Method to delete the profile
+        '''
+        self.delete()
+
     
 class Image(models.Model):
+    '''
+    Class that has details for the image that is posted 
+    '''
     image=models.ImageField(upload_to='images/',blank=True)
     image_name=models.CharField(max_length=30)
     image_caption=models.CharField(max_length=100)
     editor = models.ForeignKey(User,on_delete=models.CASCADE)
     profile=models.ForeignKey(Profile,null=True)
     likes=models.ManyToManyField(User,related_name="likes",blank=True)
+    followers=models.ManyToManyField(User,related_name="followers",blank=True)
     # comments=models.ForeignKey(Comments,null=True)
     pub_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
+        '''
+        Setting up self
+        '''
         return self.image_name
+
+    def save_image(self):
+        '''
+        Method for saving the image
+        '''
+        self.save()
+
+    def delete_image(self):
+        '''
+        Method for deleting the image
+        '''
+        self.delete()
     
     @classmethod
     def get_images(cls):
+        '''
+        Method for retrieving all images
+        '''
         image=cls.objects.all()
         return image
+
     @classmethod
     def search_by_category(cls,category):
+        '''
+        Method for searching for an image using the category
+        '''
+
         category_result=cls.objects.filter(image_name__icontains=category)
         return category_result
 
@@ -55,16 +104,25 @@ class Image(models.Model):
         return image_posted
 
 class Comments(models.Model):
+    '''
+    Class that contains the deatils of the comments made by the users
+    '''
     detail= HTMLField()
     editor = models.ForeignKey(User,on_delete=models.CASCADE)
     comment_date = models.DateTimeField(auto_now_add=True)
     image_foreign=models.ForeignKey(Image, on_delete=models.CASCADE)
 
     def __str__(self):
+        '''
+        Setting up self
+        '''
         return self.detail
 
     @classmethod
     def get_comments(cls):
+        '''
+        Method for getting all the comments posted
+        '''
         comment=cls.objects.all()
         return comment
 
@@ -86,25 +144,12 @@ class Comments(models.Model):
         function that deletes a comment
         '''
         self.delete()
-
-    # @classmethod
-    # def update_caption(cls,comment_id, text):
-    #     '''
-    #     function that updates a comment
-    #     '''
-    #     searched=cls.objects.get(id=comment_id)
-    #     searched.body=text
-    #     searched.save()
-    #     return searched
     
 
-
-
-
-
-
-        
 class NewsLetterRecipients(models.Model):
+    '''
+    Class that contains details of users who subscribe to the website newsletter
+    '''
     name = models.CharField(max_length = 30)
     email = models.EmailField()
 

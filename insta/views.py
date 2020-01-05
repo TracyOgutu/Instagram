@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse,Http404,HttpResponseRedirect
 from . models import Image,Profile,NewsLetterRecipients,Comments
-from .forms import NewsLetterForm,NewImageForm,NewProfileForm,NewCommentForm
+from .forms import NewsLetterForm,NewImageForm,NewProfileForm,NewCommentForm,UpdateProfileForm
 from .email import send_welcome_email
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -113,14 +113,35 @@ def makecomment(request):
         form = NewCommentForm()
     return render(request, 'comment.html', {"form": form})
    
-def deletephoto(request,photo_id):
-    object = get_object_or_404(Model, pk=photo_id)
-    object.delete()
-    return render(request)
+def delete_post(request,post_id=None):
+    post_to_delete=get_object_or_404(Image,id=post_id)
+    post_to_delete.delete()
+    return redirect('welcome')
 
 def like_a_post(request):
     post = get_object_or_404(Image,id=request.POST.get('post_id'))
     post.likes.add(request.user)
     return redirect('welcome')
+
+def follow(request):
+    post = get_object_or_404(Image,id=request.POST.get('post_id'))
+    post.followers.add(request.user)
+    return redirect('welcome')
+
+@login_required(login_url='/accounts/login/')
+def updateprofile(request):
+    if request.method=='POST':
+        profileform=UpdateProfileForm(request.POST,request.FILES,instance=request.user)
+        if profileform.is_valid():
+            profileform.save()
+            
+        return redirect('welcome')
+    else:
+        profileform=UpdateProfileForm(instance=request.user)
+    
+    context={
+        'profileform':profileform,
+    }
+    return render(request,'updateprofile.html',context)
 
 

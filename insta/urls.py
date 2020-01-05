@@ -9,9 +9,11 @@ urlpatterns=[
     url(r'^photo/(\d+)',views.single_photo,name='photo'),
     url(r'^new/image$', views.new_image, name='new-image'),
     url(r'^new/profile$', views.new_profile, name='new-profile'),
+    url(r'^updateprofile$',views.updateprofile,name='updateprofile'),
     url(r'^comment$',views.makecomment,name='makecomment'),
-    url(r'^(?P<object_id>[0-9]+)/delete_answer/$', views.deletephoto, name='deletephoto'),
     url(r'^like$',views.like_a_post,name='like_a_post'),
+    url(r'^follow$',views.follow,name='follow'),
+    url(r'^delete/(?P<post_id>\d+)$',views.delete_post,name='delete'),
     
     
 ]

@@ -14,6 +14,7 @@ urlpatterns=[
     url(r'^like$',views.like_a_post,name='like_a_post'),
     url(r'^follow$',views.follow,name='follow'),
     url(r'^delete/(?P<post_id>\d+)$',views.delete_post,name='delete'),
+    url(r'displayprofile/(\d+)',views.display_profile,name='displayprofile')
     
     
 ]

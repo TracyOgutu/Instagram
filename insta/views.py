@@ -5,6 +5,7 @@ from .forms import NewsLetterForm,NewImageForm,NewProfileForm,NewCommentForm,Upd
 from .email import send_welcome_email
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 @login_required(login_url='/accounts/login/')
@@ -145,3 +146,11 @@ def updateprofile(request):
     return render(request,'updateprofile.html',context)
 
 
+@login_required(login_url='/accounts/login/')
+def display_profile(request,user_id):
+    single_profile=Profile.single_profile(user_id)  
+    profilepicid=Profile.get_profilepic_id(user_id)
+    image_posted=Image.single_image(user_id)
+  
+      
+    return render(request,'profiledisplay.html',{"profile":single_profile,"image":image_posted})

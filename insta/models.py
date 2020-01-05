@@ -36,7 +36,21 @@ class Profile(models.Model):
         Method to delete the profile
         '''
         self.delete()
+    @classmethod
+    def single_profile(cls,user_id):
+        '''
+        function gets a single profile posted by id
+        '''
+        profile=cls.objects.get(id=user_id)
+        return profile
 
+    @classmethod
+    def get_profilepic_id(cls,imageId):
+        '''
+        function that gets a profilepic id    
+        '''
+        image_id=cls.objects.filter(id=imageId)
+        return image_id
     
 class Image(models.Model):
     '''

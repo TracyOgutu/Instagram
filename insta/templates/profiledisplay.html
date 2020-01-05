@@ -14,7 +14,16 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Instatonne</title>
+
+
+    <title>New Image</title>
+    {{form.media}}
+
+    {% block styles %}
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static 'css/news.css' %}">
+    {% endblock %}
+
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
@@ -40,7 +49,8 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
         <div class="container">
-            <a class="navbar-brand js-scroll-trigger" href="{%url 'welcome' %}">Go back to Instatonne Home</a>
+            <a class="navbar-brand js-scroll-trigger" href="{%url 'welcome'%}">Back to Instatonne Home</a>
+
 
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                 data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
@@ -93,13 +103,9 @@
                             <li>
                                 <a class='btn btn-default' href="/accounts/register">Create Account</a>
                             </li>
-
-
                         </ul>
                     </li>
-
                 </ul>
-
                 {% endif %}
             </div>
 
@@ -110,67 +116,48 @@
         <div class="container h-100">
             <div class="row h-100">
                 <div class="col-lg-7 my-auto">
-                    <div class="header-content mx-auto" style="margin-top: 20%;">
-                        <h5 class="mb-5">
-
-                            Image Name: {{photo.image_name}}<hr>
+                    <div class="header-content mx-auto">
+                            {%if profile%}
+                            <h1> Profile </h1>
                             
-                            Caption: {{photo.image_caption}}
+                            <img src="{{profile.profile_photo.url}}" alt="profilephoto" style="height:300px;width:300px;"><br>
+                            <h2>Bio:{{profile.bio}}</h2>
+                            {%endif%}
+                           
+                       
+                        
 
-                            <hr>Posted: {{photo.pub_date|timesince}} ago by {{photo.editor}}</h5>
-                        <h5>Comments: {{comments|length}}</h5>
-                        <h4><u>Add a comment</u></h4>
-                        <form action="/photo/{{photo.id}}" method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            {% bootstrap_form form %}
-                            <button type="submit" class="btn btn-outline-primary">Post</button>
-                        </form>
                     </div>
                 </div>
                 <div class="col-lg-5 my-auto">
+                    {%if image%}
+                  
                     <div class="device-container">
-                        <img src="{{photo.image.url}}" alt="image" height="300px;" width="300px;">
-                    </div><br>
-                    <h3><u>Comments</u></h3>
-                    <div class="row">
-                        <div class="col-md-12">
-                            {% if comments %}
-                            {% for comment in comments %}
-                            <div class="card bg-dark">
-                                <h5>{{comment.detail}}</h5>
-                                <p><small class="text-white"><i>{{comment.editor}}</i></small></p>
-                            </div>
-                            <br>
-                            {% endfor %}
-                            {% else %}
-                            <p class="alert alert-danger">No Comment posted</p>
-                            {% endif %}
+
+                        <h1>Images posted</h1>
+                        
+                       <img src="{{image.image.url}} " alt="imagepostedpic" style="height:300px;width:300px;"><br>
+
+                       <h4>Name: {{image.image_name}}</h4>
+                       <h4>Caption: {{image.image_caption}}</h4><br>
+                   
+                    {%endif%}
+                        <div class="button">
+                            <!-- You can hook the "home button" to some JavaScript events or just remove it -->
                         </div>
                     </div>
                 </div>
-
-                <br>
-
             </div>
+        </div>
+        </div>
         </div>
     </header>
 
-    <div class="container-fluid">
 
-
-        <h1></h1>
-
-
-        <p></p>
-
-
-
-    </div>
-    </section>
 
     <footer>
         <div class="container">
-            <p>&copy; Your Website 2019. All Rights Reserved.</p>
+            <p>&copy; Instatonne Website 2020. All Rights Reserved.</p>
             <ul class="list-inline">
                 <li class="list-inline-item">
                     <a href="#">Privacy</a>

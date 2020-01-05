@@ -32,7 +32,7 @@
 
     <!-- Custom styles for this template -->
     <link href="{% static 'css/new-age.min.css' %}" rel="stylesheet">
-
+    <link rel="stylesheet" href="{% static 'css/insta.css' %}">
 </head>
 
 <body id="page-top">
@@ -203,7 +203,7 @@
            
             <div class="col-lg-4">
                 <div class="feature-item">
-                    <a href="{% url 'photo' images.id %}"><img src="{{images.image.url}}" alt="myimage"
+                    <a href="{% url 'photo' images.id %}"><img src="{{images.image.url}}" id ="zoom" alt="myimage"
                             style="height:300px;width:300px;"></a>
                     <div>
 
@@ -215,18 +215,18 @@
                         <hr>
                         <p class="text-muted">Caption: {{images.image_caption}}</p>
 
-
+<!-- 
                         <form action="{% url 'like_a_post' %}" method="post">
                             {% csrf_token %}
                             <button class="like" type="submit" name="post_id" value="{{images.id}}"><img width="45px"
                                     height="40px"
                                     src="https://www.freepngimg.com/thumb/heart/67620-heart-instagram-icons-button-computer-like.png">Like
                                 Post</button>
-                        </form>
+                        </form> -->
                         <hr>
                         <p>Likes: {{images.likes.count}}</p>
                         <hr>
-                        <a href="/photo/{{images.id}}">Comment</a><hr>
+                        <a href="/photo/{{images.id}}">More</a><hr>
                         <a href="{% url 'delete' images.id %}">Delete</a>
                         <hr>
                     </div>
@@ -283,14 +283,15 @@
                     {%for everyone in everyone%}
                     {% if user.is_authenticated %}
                     <div class="col-lg-4 col-md-4 col-6">
-                        <a href="{% url 'photo' everyone.id %}" class="d-block mb-4 h-100">
-                            <img class="img-fluid img-thumbnail" src="{{everyone.image.url}}" alt="testphoto">
+                        <a href="{% url 'photo' everyone.id %}" class="d-block mb-4 h-100" >
+                            <img id="zoom" class="img-fluid img-thumbnail" src="{{everyone.image.url}}" alt="testphoto" style="height:300px;width:300px;">
                         </a>
                     </div>
                     <div>
                         <h6>Posted by: {{everyone.editor}} </h6>
                         <h6>Followers: {{everyone.followers.count}}</h6>
                         <h6>Likes: {{everyone.likes.count}}</h6>
+                        <h6>Name:{{everyone.image_name}}</h6>
                        
                         <form action="{% url 'like_a_post' %}" method="post">
                             {% csrf_token %}
@@ -300,6 +301,7 @@
                                 Post</button>
                         </form>
                         <a href="/photo/{{everyone.id}}">Comment</a><br>
+                        <!-- <a href="{% url 'displayprofile' everyone.id %}">View Profile</a> -->
                        
 
                         <form action="{% url 'follow' %}" method="post">

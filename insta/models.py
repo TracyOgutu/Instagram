@@ -41,7 +41,7 @@ class Profile(models.Model):
         '''
         function gets a single profile posted by id
         '''
-        profile=cls.objects.get(id=user_id)
+        profile=cls.objects.get(editor=user_id)
         return profile
 
     @classmethod
@@ -116,6 +116,14 @@ class Image(models.Model):
         '''
         image_posted=cls.objects.get(id=image_id)
         return image_posted
+
+    @classmethod
+    def user_images(cls,user_id):
+        '''
+        function gets images posted by id
+        '''
+        image_posted=cls.objects.get(editor=user_id)
+        return image_posted    
 
 class Comments(models.Model):
     '''

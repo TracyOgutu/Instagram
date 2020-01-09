@@ -38,10 +38,11 @@
 <body id="page-top">
 
     <!-- Navigation -->
+   
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
         <div class="container">
             <a class="navbar-brand js-scroll-trigger" href="#page-top">Instatonne Home</a>
-
+            
             {% if user.is_authenticated %}
             <!-- Adding a search form  -->
             <div class="col-sm-4 col-md-4 navbar-right">
@@ -143,8 +144,18 @@
             <div class="row h-100">
                 <div class="col-lg-7 my-auto">
                     <div class="header-content mx-auto">
+                        {% if messages %}
+                            <div class="card">
+                                    <div class="card-body">
+                                        {% for message in messages %}
+                                        <h1 class="alert-danger">{{message}}</h1>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                        {% endif %}    
                         <h1 class="mb-5">Instatonne
                             <hr>Showcase your beautiful photos or anything else!</h1>
+                            
                         <a href="{%url 'new-image'%}" class="btn btn-outline btn-xl js-scroll-trigger">Start
                             Sharing!</a><hr>
 
@@ -158,7 +169,6 @@
                            
                         <div class="device-mockup iphone6_plus portrait white">
                             <div class="device">
-                                {%for profile in profile%}
                                 {% if user.is_authenticated %}
                                 <div class="screen" style="background: transparent;">
                                     <!-- Demo image for screen mockup, you can put an image here, some HTML, an animation, video, or anything else! -->
@@ -166,7 +176,6 @@
                                 </div>
                                
                                 {%endif%}
-                                {%endfor%}
                                 <div class="button">
                                     <!-- You can hook the "home button" to some JavaScript events or just remove it -->
                                 </div>
@@ -181,14 +190,14 @@
     <section class="features" id="photos">
         <h1 class="text-center" style="color: tomato;">{{user.username}} instatonne personal photos </h1>
         {%if profile%}
-        {%for profile in profile%}
+        
         {% if user.is_authenticated %}
        
         <div>
                 <h1 class="text-center">{{user.username}} bio: {{profile.bio}}</h1>
         </div>
         {%endif%}
-        {%endfor%}
+       
         {%else%}
         <div>
             <h1 class="text-center">{{user.username}} has no bio</h1>
@@ -279,8 +288,8 @@
             <div class="container-fluid">
                 <hr class="mt-2 mb-5">
                 <div class="row text-lg-left">
-                    {%if everyone%}
-                    {%for everyone in everyone%}
+                    {%if everyone %}
+                    {% for everyone in everyone %}
                     {% if user.is_authenticated %}
                     <div class="col-lg-4 col-md-4 col-6">
                         <a href="{% url 'photo' everyone.id %}" class="d-block mb-4 h-100" >
@@ -301,7 +310,7 @@
                                 Post</button>
                         </form>
                         <a href="/photo/{{everyone.id}}">Comment</a><br>
-                        <!-- <a href="{% url 'displayprofile' everyone.id %}">View Profile</a> -->
+                        <a href="{% url 'displayprofile' everyone.editor.id %}">View Profile</a>
                        
 
                         <form action="{% url 'follow' %}" method="post">

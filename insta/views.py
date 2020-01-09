@@ -6,6 +6,7 @@ from .email import send_welcome_email
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
 
 # Create your views here.
 @login_required(login_url='/accounts/login/')
@@ -14,8 +15,13 @@ def welcome(request):
     comment=Comments.get_comments()
     users = User.objects.all()
     logged_in_user = request.user
+    
     logged_in_user_posts = Image.objects.filter(editor=logged_in_user)
-    profile=Profile.objects.filter(editor=logged_in_user)
+    try:
+        profile=Profile.objects.get(editor=logged_in_user)
+    except Profile.DoesNotExist:
+        profile=None
+    
     if request.method == 'POST':
         form = NewsLetterForm(request.POST)
         if form.is_valid():
@@ -148,9 +154,13 @@ def updateprofile(request):
 
 @login_required(login_url='/accounts/login/')
 def display_profile(request,user_id):
-    single_profile=Profile.single_profile(user_id)  
-    profilepicid=Profile.get_profilepic_id(user_id)
-    image_posted=Image.single_image(user_id)
-  
-      
-    return render(request,'profiledisplay.html',{"profile":single_profile,"image":image_posted})
+    try:
+        single_profile=Profile.single_profile(user_id)              
+        image_posted=Image.user_images(user_id)
+        return render(request,'profiledisplay.html',{"profile":single_profile,"image":image_posted})
+    except Profile.DoesNotExist:
+        messages.info(request,'The user has not set a profile yet')
+        return redirect('welcome')
+
+
+    

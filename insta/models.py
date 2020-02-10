@@ -60,7 +60,7 @@ class Image(models.Model):
     image_name=models.CharField(max_length=30)
     image_caption=models.CharField(max_length=100)
     editor = models.ForeignKey(User,on_delete=models.CASCADE)
-    profile=models.ForeignKey(Profile,null=True)
+    profile=models.ForeignKey(Profile,null=True,on_delete=models.CASCADE)
     likes=models.ManyToManyField(User,related_name="likes",blank=True)
     followers=models.ManyToManyField(User,related_name="followers",blank=True)
     # comments=models.ForeignKey(Comments,null=True)
